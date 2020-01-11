@@ -1,5 +1,5 @@
 # shdtynnhdsc
-瞎写的
+瞎写的 先爬爬微博
 
 1. pip install -r requirements.txt
 2. 建表 sql:
