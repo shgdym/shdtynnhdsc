@@ -15,54 +15,54 @@ class MySql:
         self.connect()
 
     def connect(self):
-        """
-        :connect to mysql
-        """
         if 'cursor' in locals().keys():
             pass
         else:
-            self.dbconn = pymysql.connect(host=self.host, user=self.user, password=self.password, db=self.db, port=self.port)
+            self.dbconn = pymysql.connect(host=self.host, user=self.user, password=self.password, db=self.db, port=self.port, charset='utf8mb4')
             self.cursor = self.dbconn.cursor()
 
     def getRows(self, query_sql):
-        """
-        :param query_sql:
-        :return: query result
-        """
         self.cursor.execute(query_sql)
         results = self.cursor.fetchall()
         return results
 
     def getFirstRow(self, query_sql):
-        """
-        :param query_sql:
-        :return: first row of query result
-        """
         res = self.getRows(query_sql)
         if len(res) == 0:
             return ""
         return res[0]
 
     def getFirstRowColumn(self, query_sql):
-        """
-        :param query_sql:
-        :return: first row column of query result
-        """
         row = self.getFirstRow(query_sql)
         if row == "":
             return ""
         return row[0]
 
     def query(self, query_sql):
-        """
-        :param query_sql:
-        :return: boole
-        """
         self.cursor.execute(query_sql)
-        r = self.dbconn.commit()
+        self.dbconn.commit()
 
     def close(self):
-        """
-        :close mysql connect
-        """
         self.cursor.close()
+
+# if __name__ == "__main__":
+#     objMysql = MySqlExt()
+#     # sql = """CREATE TABLE EMPLOYEE (
+#     #          FIRST_NAME  CHAR(20) NOT NULL,
+#     #          LAST_NAME  CHAR(20),
+#     #          AGE INT,
+#     #          SEX CHAR(1),
+#     #          INCOME FLOAT )"""
+#     # objMysql.query(sql)
+#     #
+#     # sql = """INSERT INTO EMPLOYEE(FIRST_NAME,
+#     #          LAST_NAME, AGE, SEX, INCOME)
+#     #          VALUES ('Mac', 'Mohan', 20, 'M', 2000),('john', 'Mohan', 22, 'W', 1000)"""
+#     # objMysql.query(sql)
+#
+#     sql = """SELECT age
+#              FROM EMPLOYEE
+#              where age >55"""
+#     res = objMysql.getFirstRowColumn(sql)
+#     print(res)
+#     exit()
