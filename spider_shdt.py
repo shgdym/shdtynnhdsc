@@ -9,8 +9,7 @@ import time
 print("<< Start @ :", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) ,">>")
 objMysql = MySql()
 objMysql.query('set names utf8mb4')
-
-uid = 1742987497 # 微博id 此处为上海地铁微博的id
+uid = 1742987497  # 微博id 此处为上海地铁微博的id
 url = 'https://m.weibo.cn/api/container/getIndex?uid={}&t=0&type=uid&value={}&containerid=107603{}'.format(uid, uid, uid)
 res = requests.get(url)
 res_content = res.content
@@ -22,17 +21,20 @@ k = 0
 for i in range(len(dict)):
     item = dict[i]
     if item['card_type'] != 9:
-        # 忘了此处为什么continue
         continue
-    # 去重
+
     res = {}
-    sql = """SELECT * FROM spider_dt WHERE weiboid = {}""".format(item['mblog']['id'])
+    sql = """SELECT *
+          FROM spider_dt
+          WHERE weiboid = {}""".format(item['mblog']['id'])
     query_res = objMysql.getFirstRow(sql)
     if query_res:
         continue
 
     res['text'] = item['mblog']['text']
+
     res['addtime'] = item['mblog']['created_at']
+
     res['pics'] = ''
     # 获取图片(如果有的话)
     if 'pics' in item['mblog'].keys():
@@ -42,17 +44,17 @@ for i in range(len(dict)):
 
     if res['pics'] == '':
         pic_status = "Processed"
-    else :
-        # 如果有图片标记一个状态 另一个脚本来下载
+    else:
+        # 如果有图片标记一个状态 另get_weiboimg.py来下载
         pic_status = "Pending"
-
     t_sql = ''
-    r_text=res['text'].replace("'","\\\'")
-    t_sql = """INSERT INTO `spider_dt` (`content`,`picsstate`,`weiboid`,`addtime`,`picurl`) VALUE ('{}','{}',{},'{}','{}');""".format(r_text, pic_status,item['mblog']['id'],time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), res['pics'])
-    k +=1
-    try:
-        objMysql.query(t_sql)
-    except:
-        print(t_sql)
+    r_text = res['text'].replace("'","\\\'")
+    # r_text = r_text.encode("utf-8").decode("latin1")
+    t_sql = """INSERT INTO `spider_dt` (`content`,`picsstate`,`weiboid`,`addtime`,`showtime`) VALUE ('{}','{}',{},'{}','{}');""".format(r_text, pic_status,item['mblog']['id'],time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), res['addtime'])
+    k += 1
+
+    objMysql.query(t_sql)
+
+
 print(k)
 print("<< End @ :", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) ,">>")
