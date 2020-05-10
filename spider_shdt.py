@@ -24,7 +24,7 @@ for i in range(len(dict)):
         continue
 
     res = {}
-    sql = """SELECT *
+    sql = """SELECT id
           FROM spider_dt
           WHERE weiboid = {}""".format(item['mblog']['id'])
     query_res = objMysql.getFirstRow(sql)
@@ -45,7 +45,7 @@ for i in range(len(dict)):
     if res['pics'] == '':
         pic_status = "Processed"
     else:
-        # 如果有图片标记一个状态 另get_weiboimg.py来下载
+        # 如果有图片标记一个状态 用get_weiboimg.py来下载
         pic_status = "Pending"
     t_sql = ''
     r_text = res['text'].replace("'","\\\'")
