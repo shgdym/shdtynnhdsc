@@ -17,6 +17,8 @@ def save_img(img_url,file_name,file_path=r'/home/data/imgs'):
             os.makedirs(file_path)
         # get image suffix
         file_suffix = os.path.splitext(img_url)[1]
+        if 'video' in img_url:
+            file_suffix = '.mp4'
         # get img name
         filename = '{}{}{}{}'.format(file_path,os.sep,file_name,file_suffix)
         # download img, save
@@ -47,6 +49,8 @@ for i in range(len(pics)):
             tmp_url = pic_list[i].replace('orj360','large')
         elif 'thumb150' in pic_list[i]:
             tmp_url = pic_list[i].replace('thumb150','large')
+        elif 'video' in pic_list[i]:
+            tmp_url = pic_list[i]
         else:
             print(pic_list[i])
             exit()
