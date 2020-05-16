@@ -41,7 +41,9 @@ for i in range(len(dict)):
         for j in range(len(item['mblog']['pics'])):
             res['pics'] += item['mblog']['pics'][j]['url']
             res['pics'] += "\n"
-
+    if 'page_info' in item['mblog'].keys():
+        if 'media_info' in item['mblog']['page_info'].keys():
+            res['pics'] += item['mblog']['page_info']['media_info']['mp4_hd_url']
     if res['pics'] == '':
         pic_status = "Processed"
     else:
