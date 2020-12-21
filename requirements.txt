@@ -1,4 +1,3 @@
-certifi==2019.11.28
 chardet==3.0.4
 idna==2.8
 PyMySQL==0.9.3
