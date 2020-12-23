@@ -6,7 +6,7 @@ import json
 from mysqlExt import MySql
 import time
 
-print("<< Start @ :", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) ,">>")
+print("<< Start @ :", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), ">>")
 objMysql = MySql()
 objMysql.query('set names utf8mb4')
 uid = 1742987497  # 微博id 此处为上海地铁微博的id
@@ -15,11 +15,11 @@ res = requests.get(url)
 res_content = res.content
 res = json.loads(res_content.decode())
 
-dict = res['data']['cards']
+weibo_data = res['data']['cards']
 res = {}
 k = 0
-for i in range(len(dict)):
-    item = dict[i]
+for i in range(len(weibo_data)):
+    item = weibo_data[i]
     if item['card_type'] != 9:
         continue
 
@@ -32,6 +32,9 @@ for i in range(len(dict)):
         continue
 
     res['text'] = item['mblog']['text']
+    # 转发的微博
+    if 'retweeted_status' in item['mblog'].keys():
+        res['text'] = res['text']+"====>"+item['mblog']['retweeted_status']['text']
 
     res['addtime'] = item['mblog']['created_at']
 
@@ -49,8 +52,9 @@ for i in range(len(dict)):
     else:
         # 如果有图片标记一个状态 用get_weiboimg.py来下载
         pic_status = "Pending"
+
     t_sql = ''
-    r_text = res['text'].replace("'","\\\'")
+    r_text = res['text'].replace("'", "\\\'")
     # r_text = r_text.encode("utf-8").decode("latin1")
     t_sql = """INSERT INTO `spider_dt` (`content`,`picsstate`,`weiboid`,`addtime`,`showtime`) VALUE ('{}','{}',{},'{}','{}');""".format(r_text, pic_status, item['mblog']['id'], time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), res['addtime'])
     k += 1
@@ -59,4 +63,4 @@ for i in range(len(dict)):
 
 
 print(k)
-print("<< End @ :", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) ,">>")
+print("<< End @ :", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), ">>")

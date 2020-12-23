@@ -13,10 +13,11 @@ class Const(object):
 
         self.__dict__[name] = value
 
+
 const = Const()
 
 # mysql
-const.DB_HOST  = '127.0.0.1'
+const.DB_HOST = '127.0.0.1'
 const.DB_USER = 'root'
 const.DB_PASS = 'YOURPASSWORD'
 const.DB_NAME = 'YOURDBNAME'

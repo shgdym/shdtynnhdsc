@@ -1,8 +1,17 @@
-# shdtynnhdsc
+# 上海地铁一年能坏多少次
 上海地铁一年能坏多少次  
 瞎写的 爬爬上海地铁微博 年底算一下他一年能坏多少次
 
+爬虫程序是spider.py 修改该文件12行uid为目标用户的uid  
+如果想要获取图片, 使用get_weiboimg.py  
+经测试, 即使微博被删除 img也可以获取到  
+  
 ## 使用方法
+### crontab
+```
+*/2 * * * * python3 /home/proj/spider.py >> /home/data/logs/spider.log 2>&1  
+00 12 * * * python3 /home/proj/get_weiboimg.py >> /home/data/logs/get_weiboimg.log 2>&1
+```
 ### 获取程序
 ```
 $ git clone https://github.com/shgdym/weiboSpider.git
