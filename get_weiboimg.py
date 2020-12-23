@@ -24,9 +24,9 @@ def save_img(img_url,file_name,file_path=r'/home/data/imgs'):
         # download img, save
         urllib.request.urlretrieve(img_url,filename=filename)
     except IOError as e:
-        print('download fail :',e)
+        print('download fail :', e)
     except Exception as e:
-        print('download error ：',e)
+        print('download error ：', e)
     return filename
 
 k = 0
@@ -35,30 +35,30 @@ for i in range(len(pics)):
     pic_list = pic_str.split("\n")
 
     j = 0
-    id = str(pics[i][0])
-    print('id',id)
+    weibo_id = str(pics[i][0])
+    print('id', weibo_id)
     local_img = ''
-    for i in range(len(pic_list)):
+    for pic_i in range(len(pic_list)):
         tmp_name = id+'_'+str(j)
         if pic_list[i] == '':
             continue
 
-        if i!=0:
+        if pic_i != 0:
             local_img += "\r\n"
-        if 'orj360' in pic_list[i]:
-            tmp_url = pic_list[i].replace('orj360','large')
-        elif 'thumb150' in pic_list[i]:
-            tmp_url = pic_list[i].replace('thumb150','large')
-        elif 'video' in pic_list[i]:
-            tmp_url = pic_list[i]
+        if 'orj360' in pic_list[pic_i]:
+            tmp_url = pic_list[pic_i].replace('orj360', 'large')
+        elif 'thumb150' in pic_list[pic_i]:
+            tmp_url = pic_list[pic_i].replace('thumb150', 'large')
+        elif 'video' in pic_list[pic_i]:
+            tmp_url = pic_list[pic_i]
         else:
-            print(pic_list[i])
+            print(pic_list[pic_i])
             exit()
         # tmp_url = pic_list[i]
         tmp_img = save_img(tmp_url, tmp_name)
         local_img += tmp_img
-        j+=1
-        k+=1
+        j += 1
+        k += 1
 
     # update mysql
     sql = "update spider_dt set picsstate='Processed',localimg='{}' where id={}".format(local_img,id)
