@@ -56,7 +56,7 @@ for i in range(len(weibo_data)):
     t_sql = ''
     r_text = res['text'].replace("'", "\\\'")
     # r_text = r_text.encode("utf-8").decode("latin1")
-    t_sql = """INSERT INTO `spider_dt` (`content`,`picsstate`,`weiboid`,`addtime`,`showtime`) VALUE ('{}','{}',{},'{}','{}');""".format(r_text, pic_status, item['mblog']['id'], time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), res['addtime'])
+    t_sql = """INSERT INTO `spider_dt` (`content`,`picsstate`,`weiboid`,`addtime`) VALUE ('{}','{}',{},'{}');""".format(r_text, pic_status, item['mblog']['id'], time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
     k += 1
 
     objMysql.query(t_sql)
